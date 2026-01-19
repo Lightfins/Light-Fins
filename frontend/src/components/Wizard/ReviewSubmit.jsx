@@ -9,11 +9,14 @@ const ReviewSubmit = ({ onPrev, data }) => {
         setError(null);
         try {
             const apiUrl = import.meta.env.VITE_API_URL || '/api';
+            console.log('Attempting to generate PDF via:', apiUrl); // Debug log
             const response = await fetch(`${apiUrl}/generate-pdf`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(data)
             });
+
+            console.log('Response status:', response.status); // Debug log
 
             if (!response.ok) throw new Error('Failed to generate PDF');
 
@@ -65,7 +68,7 @@ const ReviewSubmit = ({ onPrev, data }) => {
                     onClick={handleSubmit}
                     disabled={submitting}
                 >
-                    {submitting ? 'Generating PDF...' : 'Submit & Download PDF'}
+                    {submitting ? 'Generating PDF (may take 60s to wake up backend)...' : 'Submit & Download PDF'}
                 </button>
             </div>
         </div>
