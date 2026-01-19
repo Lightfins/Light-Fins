@@ -1,0 +1,137 @@
+{
+    "policyholder.title": {
+        "pypdf_name": "Title"
+    },
+    "policyholder.surname": {
+        "pypdf_name": "Surname"
+    },
+    "policyholder.firstNames": {
+        "pypdf_name": "First names"
+    },
+    "policyholder.idNumber": {
+        "pypdf_name": "ID Number"
+    },
+    "policyholder.birthDate": {
+        "pypdf_name": "Date of birth"
+    },
+    "policyholder.gender": {
+        "pypdf_name": "Gender"
+    },
+    "policyholder.maritalStatus": {
+        "pypdf_name": "Marital status"
+    },
+    "policyholder.ethnicity": {
+        "pypdf_name": "Ethnicity"
+    },
+    "policyholder.countryOfBirth": {
+        "pypdf_name": "Country of birth"
+    },
+    "policyholder.countryOfResidence": {
+        "pypdf_name": "Country of residence"
+    },
+    "policyholder.nationality": {
+        "pypdf_name": "Nationality"
+    },
+    "policyholder.telephoneNumbers.cellphone": {
+        "pypdf_name": "Cell phone number"
+    },
+    "policyholder.telephoneNumbers.email": {
+        "pypdf_name": "Email"
+    },
+    "policyholder.postalAddress.buildingComplexUnit": {
+        "pypdf_name": "BuildingComplexUnit"
+    },
+    "policyholder.postalAddress.streetBoxBag": {
+        "pypdf_name": "StreetBoxBag"
+    },
+    "policyholder.postalAddress.suburb": {
+        "pypdf_name": "Suburb"
+    },
+    "policyholder.postalAddress.postalCode": {
+        "pypdf_name": "Postal code"
+    },
+    "policyholder.postalAddress.city": {
+        "pypdf_name": "City"
+    },
+    "policyholder.postalAddress.province": {
+        "pypdf_name": "Province"
+    },
+    "livesCovered.spouse.surname": {
+        "pypdf_name": "Surname_2"
+    },
+    "livesCovered.spouse.firstNames": {
+        "pypdf_name": "First names_2"
+    },
+    "livesCovered.spouse.idNumber": {
+        "pypdf_name": "ID Number_2"
+    },
+    "livesCovered.children.0.surname": {
+        "pypdf_name": "Surname_3"
+    },
+    "livesCovered.children.0.firstNames": {
+        "pypdf_name": "First names_3"
+    },
+    "livesCovered.children.0.idNumber": {
+        "pypdf_name": "ID Number_3"
+    },
+    "livesCovered.children.1.surname": {
+        "pypdf_name": "Surname_4"
+    },
+    "livesCovered.children.1.firstNames": {
+        "pypdf_name": "First names_4"
+    },
+    "livesCovered.children.1.idNumber": {
+        "pypdf_name": "ID Number_4"
+    },
+    "livesCovered.children.2.surname": {
+        "pypdf_name": "Surname_5"
+    },
+    "livesCovered.children.2.firstNames": {
+        "pypdf_name": "First names_5"
+    },
+    "livesCovered.children.2.idNumber": {
+        "pypdf_name": "ID Number_5"
+    },
+    "livesCovered.children.3.surname": {
+        "pypdf_name": "Surname_6"
+    },
+    "livesCovered.children.3.firstNames": {
+        "pypdf_name": "First names_6"
+    },
+    "livesCovered.children.3.idNumber": {
+        "pypdf_name": "ID Number_6"
+    },
+    "livesCovered.parents.0.surname": {
+        "pypdf_name": "Surname_11"
+    },
+    "livesCovered.parents.0.firstNames": {
+        "pypdf_name": "First names_11"
+    },
+    "livesCovered.parents.0.idNumber": {
+        "pypdf_name": "ID Number_11"
+    },
+    "beneficiaries.0.surname": {
+        "pypdf_name": "Surname_23"
+    },
+    "beneficiaries.0.firstNames": {
+        "pypdf_name": "First names_23"
+    },
+    "beneficiaries.0.idNumber": {
+        "pypdf_name": "ID Number_23"
+    },
+    "beneficiaries.0.share": {
+        "pypdf_name": "Percent"
+    },
+    "beneficiaries.1.surname": {
+        "pypdf_name": "Surname_24"
+    },
+    "beneficiaries.1.firstNames": {
+        "pypdf_name": "First names_24"
+    },
+    "beneficiaries.1.idNumber": {
+        "pypdf_name": "ID Number_24"
+    },
+    "beneficiaries.1.share": {
+        "pypdf_name": "Percent_2"
+    }
+}

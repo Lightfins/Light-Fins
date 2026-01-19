@@ -1,0 +1,33 @@
+# Dependencies
+node_modules/
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Build outputs
+dist/
+build/
+*.egg-info/
+
+# IDE
+.vscode/
+.idea/
+
+# Environment
+.env
+.env.local
+
+# Generated files
+backend/output/
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Temp files
+extracted/
+docx_extracted/
+example.zip
+assets.zip

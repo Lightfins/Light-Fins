@@ -1,0 +1,119 @@
+:root {
+  --sanlam-navy: #003366;
+  --sanlam-grey: #666666;
+  --sanlam-gold: #c5a059;
+  --sanlam-white: #ffffff;
+  --sanlam-bg: #f4f7f9;
+}
+
+.wizard-outer {
+  max-width: 900px;
+  margin: 40px auto;
+  background: var(--sanlam-white);
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  overflow: hidden;
+  font-family: 'Inter', sans-serif;
+}
+
+.wizard-progress {
+  height: 6px;
+  background: #eee;
+}
+
+.progress-bar {
+  height: 100%;
+  background: var(--sanlam-gold);
+  transition: width 0.3s ease;
+}
+
+.wizard-content {
+  padding: 40px;
+}
+
+.wizard-step h2 {
+  color: var(--sanlam-navy);
+  margin-bottom: 24px;
+  border-bottom: 2px solid var(--sanlam-gold);
+  padding-bottom: 10px;
+  display: inline-block;
+}
+
+.btn-primary {
+  background: var(--sanlam-navy);
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.btn-primary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-secondary {
+  background: transparent;
+  color: var(--sanlam-navy);
+  border: 1px solid var(--sanlam-navy);
+  padding: 12px 24px;
+  border-radius: 6px;
+  margin-right: 12px;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+  color: #444;
+}
+
+.form-group input, .form-group select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.life-card {
+  background: #fdfdfd;
+  border: 1px solid #eee;
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  position: relative;
+}
+
+.btn-remove {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: #ff4d4d;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+}
+
+.legal-scroll-box {
+  background: #f9f9f9;
+  padding: 20px;
+  height: 200px;
+  overflow-y: auto;
+  border: 1px solid #eee;
+  margin-bottom: 20px;
+  font-size: 0.9em;
+  color: #555;
+}

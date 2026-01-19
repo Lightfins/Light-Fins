@@ -1,0 +1,9 @@
+# Ralph Progress Log
+Started: 2026-01-18
+
+## Codebase Patterns
+- (Add durable repo conventions here as discovered)
+- (Example) Migrations: use IF NOT EXISTS
+- (Example) React timers: useRef<ReturnType<typeof setTimeout> | null>(null)
+
+---

@@ -1,0 +1,218 @@
+{
+    "meta": {
+        "productVersion": "July 2020",
+        "template": "TR4407 MP40 Value Funeral Plans 07/20",
+        "createdAt": ""
+    },
+    "flow": {
+        "introCompleted": false,
+        "popiaAccepted": false,
+        "popiaAcceptedAt": ""
+    },
+    "complianceChecklist": {
+        "intermediaryStatus": {
+            "q1_explainedPurpose": "NO",
+            "q2_disclosureLetterProvided": "NO",
+            "q2a_nameTitleDesignation": "NO",
+            "q2b_officeDetails": "NO",
+            "q2c_contacts": "NO",
+            "q3_signedDisclosureReturned": "NO"
+        },
+        "advice": {
+            "q1_takenCircumstancesIntoAccount": "NO",
+            "q1a_acceptedRecommendation": "NO",
+            "q1b_reasonIfNo": "",
+            "q2a_policyNameAndType": "NO",
+            "q2b_premium": "NO",
+            "q2c_benefitsLimitations": "NO",
+            "q2d_qualifyingPeriod": "NO",
+            "q2e_whoCanBeCovered": "NO",
+            "q2f_commissionDisclosure": "NO",
+            "q2g_coolingPeriod60Days": "NO",
+            "q2h_claimProcedure": "NO",
+            "q2i_insurerRegisteredNameAddress": "NO"
+        },
+        "applicationStage": {
+            "q1_satisfiedWithAdvice": "NO",
+            "q2_completedAndSigned": "NO",
+            "q3_understandImplicationsIfNo": "NO"
+        },
+        "replacement": {
+            "isReplacement": "NO",
+            "replacementYesNoLine": "NO"
+        },
+        "policyholderSignature": {
+            "name": "",
+            "signed": false,
+            "date": ""
+        },
+        "intermediaryDeclaration": {
+            "name": "",
+            "signed": false,
+            "date": ""
+        }
+    },
+    "introducedBy": {
+        "intermediaryContractId": "",
+        "adviser1": {
+            "firstNames": "",
+            "surname": "",
+            "idNumber": "",
+            "cellphoneNumber": "",
+            "brokerNameAndNumber": "",
+            "consultantAndNumber": "",
+            "biblifeOrPriNumber": ""
+        },
+        "adviser2": {
+            "firstNames": "",
+            "surname": "",
+            "idNumber": "",
+            "cellphoneNumber": "",
+            "brokerNameAndNumber": "",
+            "consultantAndNumber": "",
+            "biblifeOrPriNumber": ""
+        }
+    },
+    "policyholder": {
+        "firstNames": "",
+        "surname": "",
+        "previousName": "",
+        "alias": "",
+        "idNumber": "",
+        "title": "",
+        "birthDate": "",
+        "issuingCountryOfId": "South Africa",
+        "nationality": "South African",
+        "countryOfResidence": "South Africa",
+        "countryOfBirth": "South Africa",
+        "ethnicity": "",
+        "gender": "",
+        "maritalStatus": "",
+        "telephoneNumbers": {
+            "homePhone": "",
+            "cellphone": "",
+            "workPhone": "",
+            "email": ""
+        },
+        "postalAddress": {
+            "buildingComplexUnit": "",
+            "streetBoxBag": "",
+            "suburb": "",
+            "postalCode": "",
+            "city": "",
+            "province": ""
+        },
+        "physicalAddressSameAsPostal": true,
+        "physicalAddress": {
+            "buildingComplexUnit": "",
+            "streetBoxBag": "",
+            "suburb": "",
+            "postalCode": "",
+            "city": "",
+            "province": ""
+        },
+        "updateAllOtherActivePolicies": "NO",
+        "receiveDocumentsViaEmail": "YES"
+    },
+    "employmentDetails": {
+        "employer": "",
+        "employmentDate": "",
+        "unitDivision": "",
+        "basicEarnings": "",
+        "union": "",
+        "deductions": "",
+        "occupation": "",
+        "sourceOfIncome": "",
+        "educationLevel": "",
+        "paymentFrequency": "Monthly",
+        "salaryPayDay": "",
+        "employeeNumber": "",
+        "dateOfLastIncome": "",
+        "sanlamSkyPaypointNumber": "",
+        "employerSwitchboardNumber": ""
+    },
+    "paymentDetails": {
+        "paymentMethod": "Debicheck",
+        "monthlyPremium": "",
+        "bankDetails": {
+            "nameOfBank": "",
+            "accountNumber": "",
+            "branchName": "",
+            "branchCode": "",
+            "accountType": "Current",
+            "withEffectFrom": "",
+            "preferredDebitDay": ""
+        },
+        "authority": {
+            "adjustDebitDate": "YES",
+            "cancelWithSanlamDirectly": "YES",
+            "edoTracking": "YES",
+            "fallbackDebitIfEmployerFails": "YES",
+            "detailsCorrect": "YES",
+            "stopOrderFirstSalaryDeductionDate": ""
+        },
+        "policyholderSignature": {
+            "signed": false,
+            "date": ""
+        }
+    },
+    "livesCovered": {
+        "principal": {
+            "requiresCover": "YES",
+            "plan": "",
+            "premium": ""
+        },
+        "spouse": {
+            "enabled": false,
+            "category": "Spouse",
+            "firstNames": "",
+            "surname": "",
+            "previousCover": "NO",
+            "insurer": "",
+            "policyNumber": "",
+            "idNumber": "",
+            "cellphoneOrPhone": "",
+            "age": "",
+            "plan": "",
+            "gender": "",
+            "premium": ""
+        },
+        "children": [],
+        "parents": [],
+        "widerFamily": []
+    },
+    "beneficiaries": [],
+    "totals": {
+        "totalMonthlyPremium": ""
+    },
+    "escalation": {
+        "option": "Premium5Cover4",
+        "issueDate": ""
+    },
+    "declaration": {
+        "policyholderSignatureDate": "",
+        "officeUseOnlyDate": "",
+        "managerName": "",
+        "managerSignature": ""
+    },
+    "stopOrderAuthority": {
+        "required": false,
+        "firstNames": "",
+        "surname": "",
+        "employeeNumber": "",
+        "sanlamSkyPaypointNumber": "",
+        "employer": "",
+        "companyAddress": "",
+        "monthlyPremium": "",
+        "firstSalaryDeduction": "",
+        "policyNumber": "",
+        "signedAt": "",
+        "signedOnDay": "",
+        "signedOnMonth": "",
+        "signedOnYear": "",
+        "policyholderSignature": "",
+        "representativeSignature": "",
+        "approvedDate": "",
+        "paypointOfficialSignature": ""
+    }
+}

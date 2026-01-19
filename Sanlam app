@@ -1,0 +1,574 @@
+### SANLAM INDIVIDUAL VALUE FUNERAL PLAN – AI-DRIVEN MOBILE APP
+
+> **ROLE**
+> You are a senior insurance systems architect, mobile app engineer, and AI workflow designer.
+> You have deep knowledge of South African funeral insurance, underwriting rules, compliance (FAIS, POPIA), and production-grade app architecture.
+
+---
+
+## 🎯 OBJECTIVE
+
+Design a **mobile app (Android & iOS)** for a **Funeral Policy (Begrafnispolis)** that allows a client to:
+
+1. Open the app
+2. Tap **“Get Funeral Cover”**
+3. Enter age
+4. Answer only **required Sanlam underwriting questions** via an AI chat agent
+5. Instantly receive a **correct Sanlam Value Funeral Plan premium**
+6. Accept the premium
+7. Have the **official Sanlam electronic application form auto-completed**
+8. Digitally sign
+9. Receive confirmation of submission
+
+**Target completion time: < 90 seconds**
+
+---
+
+## 🧠 CORE DESIGN PRINCIPLES
+
+* No long forms
+* No duplicate data capture
+* One question at a time
+* Conversational AI replaces paper
+* Pricing is deterministic (rating tables)
+* Compliance built-in, not bolted on
+* Manual escalation only when rules require it
+
+---
+
+## 🤖 AI CHAT AGENT (PRIMARY INTERFACE)
+
+The AI agent acts as a **Sanlam Funeral Policy Consultant**.
+
+### Responsibilities:
+
+* Ask questions
+* Validate answers
+* Apply underwriting rules
+* Map answers to application form fields
+* Trigger pricing
+* Handle accept / decline logic
+
+### Constraints:
+
+* No general financial advice
+* No deviation from product rules
+* Escalate when required
+
+---
+
+## 🗂️ DATA COLLECTION (MINIMUM REQUIRED)
+
+### Policyholder:
+
+* First names
+* Surname
+* ID number
+* Date of birth
+* Gender
+* Marital status
+* Cellphone number
+* Email
+* Residential address
+* Employment status
+* Source of income
+
+### Cover Structure:
+
+* Principal life assured (mandatory)
+* Spouse (optional)
+* Children (optional, limits apply)
+* Parents (optional)
+* Wider family (optional, relationship rules apply)
+
+Relationships must follow **Sanlam family definitions** (learner guide, family tree).
+
+---
+
+## 📊 PRICING & UNDERWRITING LOGIC
+
+Use **Sanlam Value Funeral Plan rating tables** exactly as published.
+
+### Inputs:
+
+* Age at entry
+* Category (principal / spouse / child / parent / wider family)
+* Cover amount
+* Gender (where applicable)
+
+### Outputs:
+
+* Monthly premium per life assured
+* Total monthly premium (minimum R80)
+* Cover limits enforced:
+
+  * Max R100,000 (principal & spouse)
+  * Max R50,000 (parents & wider family)
+  * Child legal limits enforced
+
+No estimates. No ranges. Exact premium only.
+Source: rating tables in learner guide 
+
+---
+
+## ⏳ QUALIFYING / WAITING PERIODS
+
+AI must:
+
+* Ask if previous funeral cover existed
+* Capture previous insurer + policy number
+* Apply qualifying period reduction rules
+* Default to waiting period if not waived
+
+Rules strictly per learner guide 
+
+---
+
+## 📄 APPLICATION FORM AUTOMATION
+
+When client accepts the premium:
+
+* Auto-populate **Sanlam Individual Funeral Plan application form**
+* Every chat answer maps to a form field
+* No missing mandatory fields allowed
+* Compliance checklist included
+* Replacement question included
+* Beneficiaries captured with percentages
+
+Form structure source:
+
+* Application Completion Example 
+* Sanlam Electronic Application 
+
+---
+
+## ✍️ DIGITAL SIGNATURE
+
+* Client signs electronically inside app
+* Timestamp + consent stored
+* POPIA consent explicitly confirmed
+* Declaration acknowledged
+
+---
+
+## 🚦 ESCALATION RULES (MANDATORY)
+
+If any of the following occur, **do not auto-issue**:
+
+* Inconsistent age / ID data
+* Invalid relationship
+* Over cover limits
+* Unclear replacement disclosure
+* Missing mandatory information
+
+Instead:
+
+> “Thank you. Your application has been submitted for review. We will contact you.”
+
+---
+
+## 🧱 SYSTEM ARCHITECTURE (NON-NEGOTIABLE)
+
+Separate services:
+
+1. Mobile UI
+2. AI Chat Engine
+3. Pricing Engine (rules-based, deterministic)
+4. Application Form Engine
+5. Admin Review Layer
+
+No single monolith.
+No no-code-only dependency.
+
+---
+
+## 📦 DELIVERABLES REQUIRED FROM SYSTEM
+
+* Screen flow diagram
+* AI question tree
+* Pricing calculation logic
+* Application field mapping table
+* Acceptance & submission workflow
+
+---
+
+## 🔒 COMPLIANCE
+
+* POPIA compliant data handling
+* Consent logged
+* Data minimisation
+* Secure storage
+* FAIS-aligned disclosures
+
+---
+
+## 📥 INPUTS TO BE INGESTED
+
+This system must ingest:
+
+1. Application form (PDF / field schema)
+2. Learner guide (rules & definitions)
+3. Rating tables
+
+All provided by the user.
+
+---
+
+**END OF PROMPT**
+
+---
+
+
+
+# 🔷 AI CHAT-VRAESTROOM
+
+## FUNERAL POLICY (SANLAM VALUE FUNERAL PLAN)
+
+---
+
+## 🔐 STEP 0 — CONSENT (MANDATORY)
+
+**AF:**
+Voordat ons begin, bevestig asseblief dat jy instem dat jou inligting gebruik mag word om ’n begrafnispolis-aansoek te verwerk, in lyn met POPIA.
+
+**EN:**
+Before we begin, please confirm that you consent to your information being used to process a funeral policy application, in line with POPIA.
+
+**OPTIONS:**
+
+* Ja / Yes
+* Nee / No
+
+**IF No → END SESSION**
+
+---
+
+## 👤 STEP 1 — AGE (ENTRY POINT)
+
+**AF:**
+Wat is jou ouderdom?
+
+**EN:**
+What is your age?
+
+**VALIDATION:**
+
+* Integer
+* Min: 18
+* Max: 75
+
+**IF outside range → ESCALATE (manual review)**
+
+---
+
+## 🆔 STEP 2 — ID NUMBER
+
+**AF:**
+Wat is jou Suid-Afrikaanse ID-nommer?
+
+**EN:**
+What is your South African ID number?
+
+**VALIDATION:**
+
+* 13 digits
+* Must match age & date of birth
+
+**IF mismatch → RE-ASK ONCE → ESCALATE**
+
+---
+
+## 🧑 STEP 3 — GENDER
+
+**AF:**
+Wat is jou geslag?
+
+**EN:**
+What is your gender?
+
+**OPTIONS:**
+
+* Man / Male
+* Vrou / Female
+
+---
+
+## 📞 STEP 4 — CONTACT DETAILS
+
+**AF:**
+Wat is jou selfoonnommer?
+
+**EN:**
+What is your cellphone number?
+
+**VALIDATION:**
+
+* SA format
+* Required for policy communication
+
+---
+
+**AF:**
+Wat is jou e-posadres?
+
+**EN:**
+What is your email address?
+
+**VALIDATION:**
+
+* Valid email format
+
+---
+
+## 🏠 STEP 5 — ADDRESS
+
+**AF:**
+Wat is jou fisiese woonadres?
+
+**EN:**
+What is your physical residential address?
+
+**FIELDS:**
+
+* Suburb
+* City
+* Postal code
+
+---
+
+## 💼 STEP 6 — EMPLOYMENT / INCOME
+
+**AF:**
+Wat is jou bron van inkomste?
+
+**EN:**
+What is your source of income?
+
+**OPTIONS:**
+
+* Salaris / Salary
+* Selfstandig / Self-employed
+* Pensioen / Pension
+* Ander / Other
+
+---
+
+## ⚰️ STEP 7 — COVER AMOUNT (PRINCIPAL LIFE)
+
+**AF:**
+Hoeveel begrafnisdekking wil jy hê vir jouself?
+
+**EN:**
+How much funeral cover do you want for yourself?
+
+**OPTIONS (Sanlam limits):**
+
+* R10,000
+* R20,000
+* R30,000
+* R40,000
+* R50,000
+* R75,000
+* R100,000
+
+**VALIDATION:**
+
+* Max R100,000
+
+---
+
+## 👪 STEP 8 — ADDITIONAL LIVES (OPTIONAL)
+
+### Spouse
+
+**AF:**
+Wil jy jou gade ook byvoeg?
+
+**EN:**
+Would you like to add your spouse?
+
+**OPTIONS:**
+
+* Ja / Yes
+* Nee / No
+
+**IF Yes → collect:**
+
+* Full names
+* ID number
+* Gender
+* Cover amount (max R100,000)
+
+---
+
+### Children
+
+**AF:**
+Wil jy kinders byvoeg?
+
+**EN:**
+Would you like to add children?
+
+**IF Yes → LOOP per child:**
+
+* First name
+* Date of birth
+* Gender
+* Cover amount
+
+**VALIDATION:**
+
+* Apply legal child limits automatically
+
+---
+
+### Parents / Wider Family
+
+**AF:**
+Wil jy ouers of wyer familie byvoeg?
+
+**EN:**
+Would you like to add parents or wider family members?
+
+**VALIDATION:**
+
+* Max R50,000 per life
+* Relationship mandatory
+
+---
+
+## ⏳ STEP 9 — PREVIOUS FUNERAL COVER
+
+**AF:**
+Het jy enige bestaande of vorige begrafnisdekking?
+
+**EN:**
+Do you currently have or have you previously had funeral cover?
+
+**OPTIONS:**
+
+* Ja / Yes
+* Nee / No
+
+**IF Yes → collect:**
+
+* Insurer name
+* Policy number
+* Date cover started
+
+**RULE:**
+Apply waiting-period waiver rules if applicable.
+
+---
+
+## 📊 STEP 10 — PREMIUM CALCULATION (SYSTEM STEP)
+
+🔒 **NO QUESTION SHOWN TO CLIENT**
+
+**SYSTEM ACTION:**
+
+* Apply Sanlam rating tables
+* Calculate:
+
+  * Premium per life
+  * Total monthly premium
+* Enforce:
+
+  * Minimum premium R80
+  * All cover limits
+
+---
+
+## 💰 STEP 11 — PREMIUM DISPLAY
+
+**AF:**
+Jou totale maandelikse premie is **R{amount} per maand**.
+Dit sluit die volgende in:
+
+* Totale dekking: R{cover}
+* Wagperiode: {period}
+
+Wil jy voortgaan met hierdie dekking?
+
+**EN:**
+Your total monthly premium is **R{amount} per month**.
+This includes:
+
+* Total cover: R{cover}
+* Waiting period: {period}
+
+Would you like to proceed?
+
+**OPTIONS:**
+
+* Aanvaar dekking / Accept cover
+* Kanselleer / Cancel
+
+---
+
+## 📄 STEP 12 — APPLICATION AUTO-COMPLETION
+
+🔒 **SYSTEM ACTION**
+
+* Populate **Sanlam electronic application form**
+* Map:
+
+  * Personal details
+  * Lives assured
+  * Beneficiaries
+  * Premiums
+  * Declarations
+
+(Source: Application Completion Example & Electronic Form)
+
+---
+
+## ✍️ STEP 13 — DECLARATION & SIGNATURE
+
+**AF:**
+Bevestig asseblief dat:
+
+* Die inligting korrek is
+* Jy die verklarings verstaan
+* Jy instem tot die polisvoorwaardes
+
+**EN:**
+Please confirm that:
+
+* The information is correct
+* You understand the declarations
+* You agree to the policy terms
+
+**OPTIONS:**
+
+* Ek bevestig / I confirm
+
+→ **E-SIGNATURE INITIATED**
+
+---
+
+## ✅ STEP 14 — CONFIRMATION
+
+**AF:**
+Dankie. Jou begrafnispolis-aansoek is suksesvol ingedien.
+Jy sal ’n bevestiging per SMS en e-pos ontvang.
+
+**EN:**
+Thank you. Your funeral policy application has been successfully submitted.
+You will receive confirmation via SMS and email.
+
+---
+
+## 🚦 ESCALATION MESSAGE (IF TRIGGERED)
+
+**AF:**
+Dankie. Jou aansoek is ontvang en is gestuur vir verdere hersiening.
+Ons sal jou kontak.
+
+**EN:**
+Thank you. Your application has been received and sent for further review.
+We will contact you.
+
+---
+
+## 🔚 END OF FLOW

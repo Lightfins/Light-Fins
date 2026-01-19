@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sanlam | Value Funeral Plan Assistant</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <!-- Confetti Container will be appended here via JS -->
+
+    <div class="app-container">
+        <!-- Sidebar/Intro -->
+        <aside class="sidebar">
+            <div class="logo">
+                <img src="https://www.sanlam.co.za/style%20library/Images/Sanlam-Logo.svg" alt="Sanlam Logo"
+                    onerror="this.src='https://via.placeholder.com/150x50?text=Sanlam'">
+            </div>
+            <div class="intro-content">
+                <h1>Value Funeral Plan</h1>
+                <p>Secure your family's future with our AI-driven conversational assistant. Fast, simple, and
+                    transparent cover.</p>
+                <div class="feature-tags">
+                    <span>Instant Quotes</span>
+                    <span>No Medicals</span>
+                    <span>Up to R100k</span>
+                </div>
+            </div>
+            <div class="sidebar-footer">
+                <p>&copy; 2024 Sanlam. Licensed FSP.</p>
+            </div>
+        </aside>
+
+        <!-- Product Selection Screen -->
+        <div id="product-selection" class="product-selection">
+            <div class="selection-card">
+                <div style="display:flex; justify-content:center; gap:10px; margin-bottom:20px;">
+                    <span style="color:var(--wc-ochre); font-size:24px;">✨</span>
+                    <span style="color:var(--wc-clay); font-size:24px;">⭐</span>
+                    <span style="color:var(--wc-sage); font-size:24px;">✨</span>
+                </div>
+                <h2>Protect Your Tribe</h2>
+                <p>Calm. Grounded. Built for family continuity.</p>
+
+                <div class="plan-options">
+                    <div class="plan-option" onclick="selectPlan('value')">
+                        <div class="plan-icon">💎</div>
+                        <h3>Value Funeral Plan</h3>
+                        <ul>
+                            <li>Covers up to 10 family members</li>
+                            <li>Premiums from R80pm</li>
+                            <li>Simple, fast cover</li>
+                        </ul>
+                        <button class="select-btn">Select Value Plan</button>
+                    </div>
+
+                    <div class="plan-option" onclick="selectPlan('all_in_one')">
+                        <div class="plan-icon">🌟</div>
+                        <h3>All-in-One Plan</h3>
+                        <ul>
+                            <li>Covers up to 30 family members</li>
+                            <li>Includes Life & Grocery cover</li>
+                            <li>Premiums from R250pm</li>
+                        </ul>
+                        <button class="select-btn">Select All-in-One</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Chat Area -->
+        <main class="chat-area hidden" id="main-chat">
+            <header class="chat-header">
+                <div class="status-indicator">
+                    <span class="dot pulse"></span>
+                    <span class="status-text">Online | Assistant</span>
+                </div>
+                <h2 id="chat-title">Sanlam Assistant</h2>
+            </header>
+
+            <div id="chat-messages" class="chat-messages">
+                <!-- Messages will be injected here -->
+            </div>
+
+            <!-- Signature Pad Overlay (Hidden by default) -->
+            <div id="signature-overlay" class="hidden"
+                style="padding: 20px; background: var(--bg-light); border-radius: 15px; margin: 10px; border: 1px solid var(--wc-skywash);">
+                <h3 style="color: var(--wc-indigo); margin-bottom: 10px; text-align: center;">Sign Here</h3>
+                <canvas id="signature-pad" width="300" height="150"
+                    style="border: 2px dashed var(--wc-indigo); border-radius: 10px; background: var(--white); touch-action: none; width: 100%; display: block; margin: 0 auto;"></canvas>
+                <div style="display: flex; gap: 10px; margin-top: 15px; justify-content: center;">
+                    <button class="option-btn" onclick="clearSignature()"
+                        style="border-color: var(--wc-rust); color: var(--wc-rust);">Clear</button>
+                    <button class="option-btn" onclick="saveSignature()"
+                        style="background: var(--wc-sage); color: white; border-color: var(--wc-sage);">Confirm
+                        Signature</button>
+                </div>
+            </div>
+
+            <div class="chat-input-container">
+                <div id="input-area" class="input-area">
+                    <input type="text" id="user-input" placeholder="Type your message here..." autocomplete="off">
+                    <button id="send-btn" class="send-btn">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z" />
+                        </svg>
+                    </button>
+                </div>
+                <div id="action-area" class="action-area hidden">
+                    <!-- Buttons for options will appear here -->
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Feedback/Floating Card for Pricing -->
+    <div id="pricing-card" class="pricing-card hidden">
+        <div class="card-header">Your Quote</div>
+        <div class="card-body">
+            <div class="price-value">R0.00</div>
+            <div class="price-label">Per Month</div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,18 @@
+{
+    "name": "Sanlam Funeral Plan",
+    "short_name": "Sanlam",
+    "description": "AI-powered funeral insurance application for Sanlam Value and All-in-One plans",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#F3E9DC",
+    "theme_color": "#3A4F7A",
+    "orientation": "portrait-primary",
+    "icons": [
+        {
+            "src": "/logo.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "any maskable"
+        }
+    ]
+}

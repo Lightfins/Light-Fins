@@ -1,0 +1,19 @@
+{
+  "branchName": "ralph/feature-example",
+  "userStories": [
+    {
+      "id": "US-001",
+      "title": "Add priority field to tasks",
+      "acceptanceCriteria": [
+        "Database schema includes a priority field with a sensible default",
+        "API returns priority for tasks",
+        "UI displays priority in the task list",
+        "Typecheck passes",
+        "Tests pass"
+      ],
+      "priority": 1,
+      "passes": false,
+      "notes": "Keep changes minimal; follow existing patterns."
+    }
+  ]
+}

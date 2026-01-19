@@ -1,0 +1,96 @@
+{
+    "branchName": "ralph/react-vite-migration",
+    "userStories": [
+        {
+            "id": "US-001",
+            "title": "Create Vite React TypeScript scaffold and align project structure",
+            "acceptanceCriteria": [
+                "Vite + React + TypeScript configured",
+                "src/ structure created and compiles",
+                "npm install and npm run dev works",
+                "Typecheck passes"
+            ],
+            "priority": 1,
+            "passes": true,
+            "notes": "Prefer minimal changes; preserve existing conventions where possible."
+        },
+        {
+            "id": "US-002",
+            "title": "Migrate existing React app entrypoints to Vite",
+            "acceptanceCriteria": [
+                "main.tsx renders App",
+                "index.html is Vite-compatible",
+                "Environment vars migrated to import.meta.env",
+                "npm run dev works without runtime errors"
+            ],
+            "priority": 2,
+            "passes": true,
+            "notes": "Remove CRA-specific bootstrapping if present."
+        },
+        {
+            "id": "US-003",
+            "title": "Migrate build tooling scripts to Vite equivalents",
+            "acceptanceCriteria": [
+                "npm run build produces dist/",
+                "npm run preview works",
+                "Any old build scripts removed/updated",
+                "README updated if needed"
+            ],
+            "priority": 3,
+            "passes": true,
+            "notes": "Use vite build defaults unless repo requires custom base/path."
+        },
+        {
+            "id": "US-004",
+            "title": "Fix TypeScript path aliases and imports",
+            "acceptanceCriteria": [
+                "tsconfig paths work",
+                "vite resolve.alias configured to match tsconfig",
+                "No broken imports",
+                "npm run typecheck passes"
+            ],
+            "priority": 4,
+            "passes": true,
+            "notes": "Prefer @/ alias if repo uses it already."
+        },
+        {
+            "id": "US-005",
+            "title": "Migrate CSS/assets/public folder handling to Vite",
+            "acceptanceCriteria": [
+                "Static assets load correctly",
+                "public/ used correctly",
+                "CSS imports work",
+                "No missing asset errors in dev/build"
+            ],
+            "priority": 5,
+            "passes": true,
+            "notes": "Vite asset handling differs—fix relative URLs as needed."
+        },
+        {
+            "id": "US-006",
+            "title": "Implement production deployment target config",
+            "acceptanceCriteria": [
+                "Deployment target selected (Netlify/Vercel/Cloudflare Pages/GitHub Pages)",
+                "Build output dist/ works on platform",
+                "Correct base path and routing behavior",
+                "Deploy config committed"
+            ],
+            "priority": 6,
+            "passes": true,
+            "notes": "Default to Vercel unless repo already has another provider."
+        },
+        {
+            "id": "US-007",
+            "title": "Set up CI pipeline for build/typecheck (GitHub Actions)",
+            "acceptanceCriteria": [
+                "CI runs npm ci",
+                "CI runs npm run typecheck",
+                "CI runs npm run build",
+                "CI fails on errors"
+            ],
+            "priority": 7,
+            "passes": true,
+            "notes": "Keep it simple: ubuntu-latest, node LTS."
+        }
+    ]
+}
