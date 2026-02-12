@@ -13,13 +13,15 @@ Outputs: Position size, SL/TP levels, risk metrics, kill-switch triggers
 
 import numpy as np
 import pandas as pd
+import json
+import os
 from typing import Optional
 from config import (
     DEFAULT_RISK_PCT, MAX_RISK_PCT, ATR_PERIOD, ATR_SL_MULTIPLIER,
     ATR_TP_MULTIPLIER, MAX_DRAWDOWN_PCT, MAX_DAILY_LOSS_PCT,
     MAX_CORRELATED_POSITIONS, MAX_OPEN_POSITIONS,
     KELLY_FRACTION, MIN_POSITION_SIZE, MAX_POSITION_PCT,
-    DEFAULT_COMMISSION, FIXED_SLIPPAGE
+    DEFAULT_COMMISSION, FIXED_SLIPPAGE, RISK_STATE_PATH, DATA_DIR
 )
 
 
@@ -268,6 +270,51 @@ class RiskEngine:
 
         ror = min(1.0, ratio ** n_units) if ratio < 1 else 1.0
         return round(ror, 4)
+
+    def save_state(self):
+        """
+        Persist risk engine state to disk.
+        FIX #2: Server restart no longer wipes position tracking or kill switch.
+        """
+        os.makedirs(DATA_DIR, exist_ok=True)
+        state = {
+            "capital": self.capital,
+            "initial_capital": self.initial_capital,
+            "peak_capital": self.peak_capital,
+            "risk_pct": self.risk_pct,
+            "open_positions": self.open_positions,
+            "daily_pnl": self.daily_pnl,
+            "daily_trades": self.daily_trades,
+            "killed": self.killed,
+            "kill_reason": self.kill_reason,
+        }
+        tmp_path = str(RISK_STATE_PATH) + ".tmp"
+        with open(tmp_path, "w") as f:
+            json.dump(state, f, indent=2)
+        os.replace(tmp_path, str(RISK_STATE_PATH))
+
+    def restore_state(self) -> bool:
+        """
+        Restore risk engine state from disk on startup.
+        Returns True if state was restored, False if starting fresh.
+        """
+        if not os.path.exists(RISK_STATE_PATH):
+            return False
+        try:
+            with open(RISK_STATE_PATH, "r") as f:
+                state = json.load(f)
+            self.capital = state["capital"]
+            self.initial_capital = state["initial_capital"]
+            self.peak_capital = state["peak_capital"]
+            self.risk_pct = state.get("risk_pct", self.risk_pct)
+            self.open_positions = state.get("open_positions", [])
+            self.daily_pnl = state.get("daily_pnl", 0.0)
+            self.daily_trades = state.get("daily_trades", 0)
+            self.killed = state.get("killed", False)
+            self.kill_reason = state.get("kill_reason", "")
+            return True
+        except (json.JSONDecodeError, KeyError, IOError):
+            return False
 
     def get_status(self) -> dict:
         """Full risk engine status snapshot."""

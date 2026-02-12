@@ -49,11 +49,35 @@ from journal_engine import (
 from strategy_ranker import evaluate_strategies, auto_disable_strategies, detect_error_clusters
 from trade_scorer import compute_trade_score
 from monte_carlo import run_monte_carlo, stress_test_scenarios
+from news_filter import check_news_proximity
 
 app = FastAPI(title="Trading Command Center", version="1.0.0")
 
-# Global risk engine instance
+# Global risk engine instance — restored from disk if available (FIX #2)
 risk_engine = RiskEngine(initial_capital=DEFAULT_INITIAL_CAPITAL)
+_restored = risk_engine.restore_state()
+
+
+@app.on_event("startup")
+async def startup_event():
+    if _restored:
+        print(f"[BOOT] Risk state restored — capital: ${risk_engine.capital:.2f}, "
+              f"open positions: {len(risk_engine.open_positions)}, "
+              f"killed: {risk_engine.killed}")
+    else:
+        print(f"[BOOT] Fresh start — capital: ${risk_engine.capital:.2f}")
+    # Save state periodically via background task
+    import asyncio
+    asyncio.create_task(_periodic_state_save())
+
+
+async def _periodic_state_save():
+    """Save risk engine state to disk every 10 seconds."""
+    import asyncio
+    while True:
+        await asyncio.sleep(10)
+        risk_engine.save_state()
+
 
 # Serve frontend
 frontend_dir = Path(__file__).parent / "frontend"
@@ -143,8 +167,6 @@ async def get_metrics(days: int = 30):
 @app.get("/api/regime")
 async def get_regime():
     """Get current market regime analysis (requires market data)."""
-    # In production, this would pull live data.
-    # For now, return structure for the UI to consume.
     return {
         "current": {
             "trend": "unknown",
@@ -154,6 +176,12 @@ async def get_regime():
         },
         "note": "Connect market data feed to enable live regime detection",
     }
+
+
+@app.get("/api/news")
+async def get_news(pair: str = ""):
+    """Check economic calendar for nearby high-impact events (FIX #3)."""
+    return check_news_proximity(pair)
 
 
 @app.get("/api/sessions")
@@ -248,6 +276,9 @@ async def close_trade(request: Request):
         "notes": data.get("notes", ""),
     }
     log_trade_close(trade_id, close_data)
+
+    # Persist state after every trade close (FIX #2)
+    risk_engine.save_state()
 
     return {
         "trade_id": trade_id,

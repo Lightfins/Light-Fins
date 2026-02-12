@@ -15,19 +15,93 @@ import numpy as np
 from config import (
     CONFIDENCE_LOW, CONFIDENCE_MEDIUM, CONFIDENCE_HIGH,
     MIN_CONFIDENCE_TO_TRADE, VOLUME_SPIKE_THRESHOLD,
-    RSI_OVERBOUGHT, RSI_OVERSOLD
+    RSI_OVERBOUGHT, RSI_OVERSOLD,
+    HTF_BIAS_PENALTY, HTF_NEUTRAL_PENALTY,
+    NEWS_BLACKOUT_MINUTES
 )
 
 
 # Weight allocation for scoring components (must sum to 100)
 SCORE_WEIGHTS = {
-    "market_structure": 25,   # HH/HL/BOS alignment
-    "regime_alignment": 20,   # strategy fits current regime
+    "htf_alignment": 15,      # higher timeframe bias confirmation (FIX #1)
+    "market_structure": 20,   # HH/HL/BOS alignment
+    "regime_alignment": 15,   # strategy fits current regime
     "session_quality": 10,    # trading in good session
-    "volume_confirmation": 15, # volume confirms the move
-    "momentum_alignment": 15, # RSI/MACD support
-    "risk_reward": 15,        # R:R ratio quality
+    "volume_confirmation": 10, # volume confirms the move
+    "momentum_alignment": 10, # RSI/MACD support
+    "risk_reward": 10,        # R:R ratio quality
+    "news_filter": 10,        # economic calendar filter (FIX #3)
 }
+
+
+def score_htf_alignment(signals: dict) -> float:
+    """
+    Score based on higher-timeframe bias confirmation (0-100).
+    FIX #1: The #1 reason for false signals is trading against the HTF trend.
+    A 1H bullish BOS means nothing if the Daily is bearish.
+    """
+    score = 50.0
+
+    htf_bias = signals.get("htf_bias", "unknown")  # bullish / bearish / neutral / unknown
+    trade_direction = signals.get("trade_direction", "long")
+    htf_bos = signals.get("htf_bos", "")  # bullish / bearish from HTF
+
+    if htf_bias == "unknown":
+        # No HTF data available — mild penalty, not a kill
+        return 40.0
+
+    # Direction alignment with HTF bias
+    if htf_bias == "bullish" and trade_direction == "long":
+        score += 30
+    elif htf_bias == "bearish" and trade_direction == "short":
+        score += 30
+    elif htf_bias == "neutral":
+        score -= HTF_NEUTRAL_PENALTY
+    else:
+        # Trading AGAINST higher timeframe = major penalty
+        score -= HTF_BIAS_PENALTY
+
+    # HTF BOS confirmation (extra strong signal)
+    if htf_bos == "bullish" and trade_direction == "long":
+        score += 20
+    elif htf_bos == "bearish" and trade_direction == "short":
+        score += 20
+    elif htf_bos and htf_bos != "":
+        score -= 15  # HTF BOS in opposite direction
+
+    return np.clip(score, 0, 100)
+
+
+def score_news_filter(signals: dict) -> float:
+    """
+    Score based on economic calendar proximity (0-100).
+    FIX #3: High-impact news events create unmodelable volatility.
+    No amount of technical analysis survives NFP/FOMC/CPI surprises.
+    """
+    news_minutes = signals.get("minutes_to_news", None)
+    news_impact = signals.get("news_impact", "none")  # high / medium / low / none
+
+    # No news data available — neutral score
+    if news_minutes is None and news_impact == "none":
+        return 70.0
+
+    # Inside blackout zone for high-impact events
+    if news_impact == "high" and news_minutes is not None:
+        if abs(news_minutes) <= NEWS_BLACKOUT_MINUTES:
+            return 0.0  # ABSOLUTE KILL — no trading near red events
+        elif abs(news_minutes) <= NEWS_BLACKOUT_MINUTES * 2:
+            return 25.0  # danger zone
+        else:
+            return 80.0  # far enough away
+
+    # Medium impact events — warning but not kill
+    if news_impact == "medium" and news_minutes is not None:
+        if abs(news_minutes) <= 15:
+            return 30.0
+        else:
+            return 70.0
+
+    return 75.0  # no news or low impact
 
 
 def score_market_structure(signals: dict) -> float:
@@ -217,12 +291,14 @@ def compute_trade_score(signals: dict) -> dict:
     Returns full breakdown + final verdict.
     """
     components = {
+        "htf_alignment": score_htf_alignment(signals),
         "market_structure": score_market_structure(signals),
         "regime_alignment": score_regime_alignment(signals),
         "session_quality": score_session_quality(signals),
         "volume_confirmation": score_volume_confirmation(signals),
         "momentum_alignment": score_momentum_alignment(signals),
         "risk_reward": score_risk_reward(signals),
+        "news_filter": score_news_filter(signals),
     }
 
     # Weighted composite

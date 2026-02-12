@@ -91,6 +91,7 @@ async function pollAll() {
         pollEquity(),
         pollSessions(),
         pollMonteCarlo(),
+        pollNews(),
     ]);
     document.getElementById('lastUpdate').textContent = new Date().toISOString().slice(11, 19);
 }
@@ -327,6 +328,31 @@ function updateConfidence(score) {
     } else {
         fill.style.background = 'var(--red)';
         label.style.color = 'var(--red)';
+    }
+}
+
+// --- News Filter ---
+async function pollNews() {
+    const data = await apiFetch('/news');
+    if (!data) return;
+
+    const el = document.getElementById('newsStatus');
+    if (!el) return;
+
+    if (!data.safe_to_trade) {
+        el.textContent = `BLACKOUT (${data.next_event})`;
+        el.style.color = '#ff1744';
+        addAlert('error', `NEWS BLACKOUT: ${data.next_event} in ${Math.abs(data.minutes_to_event).toFixed(0)}min`);
+    } else if (data.caution) {
+        el.textContent = `CAUTION ${Math.abs(data.minutes_to_event).toFixed(0)}m`;
+        el.style.color = '#ffb300';
+    } else if (data.next_event) {
+        const mins = Math.abs(data.minutes_to_event || 0);
+        el.textContent = mins > 120 ? 'CLEAR' : `${mins.toFixed(0)}m to ${data.impact}`;
+        el.style.color = '';
+    } else {
+        el.textContent = 'CLEAR';
+        el.style.color = '';
     }
 }
 

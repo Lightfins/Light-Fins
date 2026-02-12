@@ -90,3 +90,18 @@ DEFAULT_INITIAL_CAPITAL = 10000.0
 DEFAULT_COMMISSION = 0.0002  # 2 pips equivalent
 SLIPPAGE_MODEL = "fixed"     # "fixed" or "volatility"
 FIXED_SLIPPAGE = 0.0001     # 1 pip
+
+# --- Multi-Timeframe ---
+HTF_TIMEFRAMES = ["4H", "D"]  # higher timeframe confirmation
+HTF_BIAS_PENALTY = 30         # score penalty for trading against HTF bias
+HTF_NEUTRAL_PENALTY = 10      # penalty when HTF is neutral (no clear direction)
+
+# --- News Filter ---
+NEWS_BLACKOUT_MINUTES = 30    # no trading ±30 min around high-impact events
+NEWS_CALENDAR_URL = "https://nfs.faireconomy.media/ff_calendar_thisweek.json"
+NEWS_HIGH_IMPACT_ONLY = True  # only filter red (high-impact) events
+NEWS_CACHE_HOURS = 4          # re-fetch calendar every 4 hours
+
+# --- Risk State Persistence ---
+RISK_STATE_PATH = DATA_DIR / "risk_state.json"
+RISK_STATE_SAVE_INTERVAL = 10  # save state every N seconds
