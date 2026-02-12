@@ -85,6 +85,7 @@ function renderAlerts() {
 async function pollAll() {
     await Promise.allSettled([
         pollStatus(),
+        pollBriefing(),
         pollJournal(),
         pollStrategies(),
         pollMetrics(),
@@ -328,6 +329,92 @@ function updateConfidence(score) {
     } else {
         fill.style.background = 'var(--red)';
         label.style.color = 'var(--red)';
+    }
+}
+
+// --- Market Radar / Briefing ---
+async function pollBriefing() {
+    const data = await apiFetch('/briefing');
+    if (!data) return;
+
+    // Mood badge
+    const moodEl = document.getElementById('radarMood');
+    if (moodEl) {
+        const mood = data.market_mood || 'MIXED';
+        moodEl.textContent = mood;
+        moodEl.className = 'panel-badge ' + (
+            mood === 'RISK-ON' ? 'badge-green' :
+            mood === 'RISK-OFF' ? 'badge-red' : 'badge-amber'
+        );
+    }
+
+    // Brief line
+    const briefEl = document.getElementById('radarBrief');
+    if (briefEl) {
+        const mood = data.market_mood || 'MIXED';
+        const moodClass = mood === 'RISK-ON' ? 'risk-on' : mood === 'RISK-OFF' ? 'risk-off' : 'mixed';
+        const s = data.summary || {};
+        briefEl.innerHTML = `
+            <span class="radar-mood-tag ${moodClass}">${mood}</span>
+            <span>${data.session || '--'} session. ${data.mood_detail || ''}</span>
+            <span style="color:var(--text-dim);margin-left:auto">
+                Bull: ${s.bullish || 0} | Bear: ${s.bearish || 0} | Neutral: ${s.neutral || 0}
+            </span>
+        `;
+    }
+
+    // Pair cards
+    const gridEl = document.getElementById('radarGrid');
+    if (gridEl && data.pairs) {
+        gridEl.innerHTML = data.pairs.map(p => {
+            const chgColor = p.change_pct >= 0 ? 'var(--green)' : 'var(--red)';
+            const arrow = p.change_pct >= 0 ? '+' : '';
+            const biasColor = p.bias === 'bullish' ? 'var(--green)' :
+                              p.bias === 'bearish' ? 'var(--red)' : 'var(--text-dim)';
+            return `<div class="radar-card">
+                <div class="radar-card-label">${p.label}</div>
+                <div class="radar-card-price">${p.price < 10 ? p.price.toFixed(4) : p.price < 1000 ? p.price.toFixed(2) : p.price.toFixed(0)}</div>
+                <div class="radar-card-change" style="color:${chgColor}">${arrow}${p.change_pct.toFixed(2)}%</div>
+                <div class="radar-card-meta">
+                    <span class="tag" style="color:${biasColor};border-color:${biasColor}">${p.bias}</span>
+                    <span class="tag">${p.trend.replace('_', ' ')}</span>
+                    <span style="color:var(--amber)">RSI ${p.rsi}</span>
+                </div>
+            </div>`;
+        }).join('');
+
+        // Log first briefing
+        if (data.pairs.length > 0) {
+            const top = data.top_movers?.[0];
+            if (top) {
+                addAlert('info', `Top mover: ${top.label} ${top.change_pct > 0 ? '+' : ''}${top.change_pct.toFixed(2)}% [${top.bias}]`);
+            }
+        }
+    }
+
+    // Update status bar regime/vol/adx from live data
+    if (data.pairs && data.pairs.length > 0) {
+        // Aggregate regime info
+        const trends = data.pairs.map(p => p.trend).filter(t => t !== 'unknown');
+        const adxs = data.pairs.map(p => p.adx).filter(a => a > 0);
+        const vols = data.pairs.map(p => p.vol_regime).filter(v => v !== 'unknown');
+
+        const count = (arr, val) => arr.filter(x => x === val).length;
+        const trendUp = count(trends, 'trending_up');
+        const trendDn = count(trends, 'trending_down');
+        const ranging = count(trends, 'ranging');
+        const avgAdx = adxs.length ? (adxs.reduce((a,b) => a+b, 0) / adxs.length).toFixed(0) : '--';
+        const hiVol = count(vols, 'high_vol');
+        const loVol = count(vols, 'low_vol');
+
+        let trendLabel = 'MIXED';
+        if (trendUp > trendDn && trendUp > ranging) trendLabel = 'TRENDING UP';
+        else if (trendDn > trendUp && trendDn > ranging) trendLabel = 'TRENDING DN';
+        else if (ranging > trendUp && ranging > trendDn) trendLabel = 'RANGING';
+
+        setText('regimeStatus', trendLabel);
+        setText('adxStatus', avgAdx);
+        setText('volStatus', hiVol > loVol ? 'HIGH' : loVol > hiVol ? 'LOW' : 'NORMAL');
     }
 }
 

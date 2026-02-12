@@ -50,6 +50,7 @@ from strategy_ranker import evaluate_strategies, auto_disable_strategies, detect
 from trade_scorer import compute_trade_score
 from monte_carlo import run_monte_carlo, stress_test_scenarios
 from news_filter import check_news_proximity
+from market_feed import generate_market_briefing, get_pair_analysis
 
 app = FastAPI(title="Trading Command Center", version="1.0.0")
 
@@ -164,17 +165,52 @@ async def get_metrics(days: int = 30):
     return get_performance_metrics(days)
 
 
+@app.get("/api/briefing")
+async def get_briefing():
+    """Full market briefing — your secretary's report."""
+    return generate_market_briefing()
+
+
+@app.get("/api/briefing/{symbol}")
+async def get_pair_brief(symbol: str):
+    """Analysis for a single pair."""
+    result = get_pair_analysis(symbol)
+    if result is None:
+        raise HTTPException(status_code=404, detail=f"No data for {symbol}")
+    return result
+
+
 @app.get("/api/regime")
 async def get_regime():
-    """Get current market regime analysis (requires market data)."""
+    """Get current market regime from live data."""
+    briefing = generate_market_briefing()
+    pairs = briefing.get("pairs", [])
+    if not pairs:
+        return {
+            "current": {"trend": "unknown", "volatility": "unknown",
+                        "strategy_fit": "unknown", "adx": 0},
+            "note": "Waiting for market data...",
+        }
+    # Aggregate regime from all pairs
+    trends = [p["trend"] for p in pairs if p["trend"] != "unknown"]
+    adxs = [p["adx"] for p in pairs if p["adx"] > 0]
+    vols = [p["vol_regime"] for p in pairs if p["vol_regime"] != "unknown"]
+
+    from collections import Counter
+    trend_mode = Counter(trends).most_common(1)[0][0] if trends else "unknown"
+    vol_mode = Counter(vols).most_common(1)[0][0] if vols else "unknown"
+    avg_adx = round(sum(adxs) / len(adxs), 1) if adxs else 0
+
     return {
         "current": {
-            "trend": "unknown",
-            "volatility": "unknown",
-            "strategy_fit": "unknown",
-            "adx": 0,
+            "trend": trend_mode,
+            "volatility": vol_mode,
+            "strategy_fit": briefing.get("market_mood", "MIXED"),
+            "adx": avg_adx,
         },
-        "note": "Connect market data feed to enable live regime detection",
+        "market_mood": briefing.get("market_mood", "MIXED"),
+        "mood_detail": briefing.get("mood_detail", ""),
+        "session": briefing.get("session", ""),
     }
 
 

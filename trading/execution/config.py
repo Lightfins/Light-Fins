@@ -105,3 +105,24 @@ NEWS_CACHE_HOURS = 4          # re-fetch calendar every 4 hours
 # --- Risk State Persistence ---
 RISK_STATE_PATH = DATA_DIR / "risk_state.json"
 RISK_STATE_SAVE_INTERVAL = 10  # save state every N seconds
+
+# --- Market Data Feed ---
+WATCHLIST = [
+    # Forex majors
+    "EURUSD=X", "GBPUSD=X", "USDJPY=X", "AUDUSD=X", "USDCHF=X", "USDCAD=X",
+    # Crypto
+    "BTC-USD", "ETH-USD",
+    # Gold & Oil
+    "GC=F", "CL=F",
+]
+# Human-readable names for display
+WATCHLIST_LABELS = {
+    "EURUSD=X": "EUR/USD", "GBPUSD=X": "GBP/USD", "USDJPY=X": "USD/JPY",
+    "AUDUSD=X": "AUD/USD", "USDCHF=X": "USD/CHF", "USDCAD=X": "USD/CAD",
+    "BTC-USD": "BTC/USD", "ETH-USD": "ETH/USD",
+    "GC=F": "GOLD", "CL=F": "OIL/WTI",
+}
+FEED_INTERVAL = "1h"           # candle interval for analysis
+FEED_LOOKBACK_DAYS = 30        # how many days of history to fetch
+FEED_CACHE_SECONDS = 300       # re-fetch data every 5 minutes
+BRIEFING_CACHE_PATH = DATA_DIR / "briefing_cache.json"

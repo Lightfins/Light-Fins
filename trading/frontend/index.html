@@ -37,6 +37,18 @@
         <!-- === MAIN GRID === -->
         <main class="main-grid">
 
+            <!-- MARKET RADAR (Full Width Top) -->
+            <section class="panel radar-panel">
+                <div class="panel-header">
+                    <span class="panel-title">Market Radar</span>
+                    <span class="panel-badge badge-cyan" id="radarMood">LOADING</span>
+                </div>
+                <div class="radar-brief" id="radarBrief">
+                    <span style="color:var(--text-dim);font-family:var(--font-mono);font-size:11px">Fetching live market data...</span>
+                </div>
+                <div class="radar-grid" id="radarGrid"></div>
+            </section>
+
             <!-- RISK EXPOSURE (Left Top) -->
             <section class="panel risk-panel">
                 <div class="panel-header">
