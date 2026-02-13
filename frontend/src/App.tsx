@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import MainLayout from './components/Layout/MainLayout';
 import ProductSelection from './components/ProductSelection/ProductSelection';
 import WizardContainer from './components/Wizard/WizardContainer';
+import './App.css';
 import './components/Wizard/Wizard.css';
 
 function App() {
@@ -26,7 +27,7 @@ function App() {
             position: 'fixed',
             top: '20px',
             right: '20px',
-            background: 'var(--wc-ochre)',
+            background: 'var(--wc-accent, #E8AF30)',
             color: 'white',
             border: 'none',
             borderRadius: '50%',

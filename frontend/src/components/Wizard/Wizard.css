@@ -117,3 +117,293 @@
   font-size: 0.9em;
   color: #555;
 }
+
+/* ── Button Group ─────────────────────── */
+.btn-group {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 1px solid #eee;
+}
+
+.btn-add {
+  background: transparent;
+  color: var(--sanlam-navy);
+  border: 1px dashed var(--sanlam-navy);
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  margin-top: 8px;
+  transition: background 0.2s;
+}
+
+.btn-add:hover {
+  background: #f0f4f8;
+}
+
+.btn-secondary {
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn-secondary:hover {
+  background: #f0f4f8;
+}
+
+.btn-primary:hover:not(:disabled) {
+  opacity: 0.85;
+}
+
+/* ── Intro Step ───────────────────────── */
+.intro-step {
+  text-align: center;
+  padding: 20px 0;
+}
+
+.sanlam-logo-large img {
+  max-width: 200px;
+  height: auto;
+  margin-bottom: 24px;
+}
+
+.subtitle {
+  font-size: 1rem;
+  color: var(--sanlam-grey);
+  margin: 0 0 28px 0;
+}
+
+.intro-card {
+  background: #f9fafb;
+  border: 1px solid #eee;
+  border-radius: 10px;
+  padding: 28px;
+  text-align: left;
+  margin-bottom: 24px;
+}
+
+.intro-card p {
+  color: #555;
+  margin: 0 0 16px 0;
+  line-height: 1.6;
+}
+
+.wizard-highlights {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.wizard-highlights li {
+  padding: 8px 0;
+  font-size: 0.92rem;
+  color: #444;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.wizard-highlights li:last-child {
+  border-bottom: none;
+}
+
+.footer-links {
+  margin-top: 20px;
+  font-size: 0.8rem;
+  color: #999;
+}
+
+.footer-links a {
+  color: var(--sanlam-navy);
+  text-decoration: none;
+}
+
+/* ── POPIA Consent ────────────────────── */
+.consent-checkbox {
+  margin: 20px 0;
+}
+
+.checkbox-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  color: #333;
+}
+
+.checkbox-container input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  accent-color: var(--sanlam-navy);
+  cursor: pointer;
+}
+
+.checkmark {
+  /* custom checkmark if needed */
+}
+
+/* ── Compliance Checklist ─────────────── */
+.checklist-container {
+  margin: 20px 0;
+}
+
+.checklist-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.checklist-row:last-child {
+  border-bottom: none;
+}
+
+.question-label {
+  flex: 1;
+  font-size: 0.9rem;
+  color: #444;
+  padding-right: 16px;
+}
+
+.radio-group {
+  display: flex;
+  gap: 16px;
+}
+
+.radio-group label {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.radio-group input[type="radio"] {
+  accent-color: var(--sanlam-navy);
+}
+
+.instruction-text {
+  color: var(--sanlam-grey);
+  font-size: 0.9rem;
+  margin-bottom: 20px;
+}
+
+/* ── Section Divider ──────────────────── */
+.section-divider {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--sanlam-navy);
+  margin: 28px 0 16px 0;
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--sanlam-gold);
+  display: inline-block;
+}
+
+/* ── Lives Dashboard ──────────────────── */
+.lives-section {
+  margin-bottom: 24px;
+}
+
+.lives-section h3 {
+  font-size: 1rem;
+  color: var(--sanlam-navy);
+  margin: 0 0 12px 0;
+}
+
+/* ── Review & Submit ──────────────────── */
+.review-summary {
+  margin: 20px 0;
+}
+
+.summary-section {
+  background: #f9fafb;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 16px;
+}
+
+.summary-section h3 {
+  font-size: 0.95rem;
+  color: var(--sanlam-navy);
+  margin: 0 0 12px 0;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 8px;
+}
+
+.summary-section p {
+  margin: 6px 0;
+  font-size: 0.88rem;
+  color: #555;
+}
+
+/* ── Error & Share ────────────────────── */
+.error-text {
+  color: #dc3545;
+  font-size: 0.88rem;
+  margin: 8px 0;
+}
+
+.share-input {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.share-input input {
+  width: 80px;
+  text-align: center;
+}
+
+/* ── Pricing Card ─────────────────────── */
+.pricing-card {
+  background: #fff;
+  border: 2px solid var(--sanlam-gold);
+  border-radius: 12px;
+  overflow: hidden;
+  text-align: center;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+}
+
+.pricing-card .card-header {
+  background: var(--sanlam-navy);
+  color: #fff;
+  padding: 12px;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.pricing-card .card-body {
+  padding: 24px;
+}
+
+.price-value {
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: var(--sanlam-navy);
+}
+
+.price-label {
+  font-size: 0.85rem;
+  color: var(--sanlam-grey);
+  margin-top: 4px;
+}
+
+/* ── Responsive Wizard ────────────────── */
+@media (max-width: 768px) {
+  .wizard-content {
+    padding: 24px 16px;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .checklist-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+}
