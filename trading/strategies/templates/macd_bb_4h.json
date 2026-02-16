@@ -1,0 +1,20 @@
+{
+  "name": "macd_bb_4h",
+  "timeframe": "4h",
+  "direction": "long",
+  "description": "MACD histogram crossover + Bollinger Band filter on 4h",
+  "indicators": [
+    {"name": "MACD", "params": {"fast": 12, "slow": 26, "signal": 9}},
+    {"name": "BBANDS", "params": {"length": 20, "std": 2.0}}
+  ],
+  "rules": {
+    "entry": [
+      {"left": "MACDh_12_26_9", "operator": "crosses_above", "right": 0},
+      {"left": "close", "operator": "less_than", "right": "BBU_20_2.0"}
+    ],
+    "exit": [
+      {"left": "MACDh_12_26_9", "operator": "crosses_below", "right": 0}
+    ]
+  },
+  "version": 1
+}

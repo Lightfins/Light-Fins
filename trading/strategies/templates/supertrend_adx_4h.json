@@ -1,0 +1,20 @@
+{
+  "name": "supertrend_adx_4h",
+  "timeframe": "4h",
+  "direction": "long",
+  "description": "Supertrend(10, 3.0) with ADX(14) > 25 trend filter on 4h",
+  "indicators": [
+    {"name": "SUPERTREND", "params": {"length": 10, "multiplier": 3.0}},
+    {"name": "ADX", "params": {"length": 14}}
+  ],
+  "rules": {
+    "entry": [
+      {"left": "SUPERTd_10_3.0", "operator": "equals", "right": 1},
+      {"left": "ADX_14", "operator": "greater_than", "right": 25}
+    ],
+    "exit": [
+      {"left": "SUPERTd_10_3.0", "operator": "equals", "right": -1}
+    ]
+  },
+  "version": 1
+}

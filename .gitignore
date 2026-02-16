@@ -31,3 +31,10 @@ extracted/
 docx_extracted/
 example.zip
 assets.zip
+.tmp/
+
+# Trading agent artifacts (data & logs persist locally, not in git)
+trading/data/*.csv
+trading/logs/
+trading/workspace/
+trading/.env
