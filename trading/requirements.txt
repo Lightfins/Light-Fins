@@ -1,0 +1,27 @@
+# TradingClaw — Python dependencies
+# All free, no paid services needed
+
+# Backtesting engine
+vectorbt>=0.26.0
+pandas-ta>=0.3.14b
+pandas>=2.0.0
+numpy>=1.24.0
+
+# Claude API
+anthropic>=0.40.0
+
+# Data fetching (free public exchange data)
+ccxt>=4.0.0
+
+# Live trading (Phase 2)
+# hyperliquid-python-sdk>=0.5.0  # uncomment when ready for live trading
+
+# Dashboard
+streamlit>=1.30.0
+
+# Utilities
+python-dotenv>=1.0.0
+requests>=2.31.0
+
+# Scheduling (for background strategy execution)
+apscheduler>=3.10.0

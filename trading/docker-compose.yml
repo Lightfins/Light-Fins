@@ -1,0 +1,28 @@
+version: "3.8"
+
+services:
+  tradingclaw:
+    build:
+      context: ..
+      dockerfile: trading/Dockerfile
+    container_name: tradingclaw
+    ports:
+      - "8501:8501"
+    volumes:
+      # Persistent workspace — strategies, results, logs survive restarts
+      - ./workspace:/app/trading/workspace
+      - ./data:/app/trading/data
+      - ./logs:/app/trading/logs
+    env_file:
+      - .env
+    environment:
+      - PYTHONPATH=/app
+      - TRADING_WORKSPACE=/app/trading/workspace
+      - TRADING_DATA_DIR=/app/trading/data
+      - TRADING_LOG_DIR=/app/trading/logs
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8501/_stcore/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3

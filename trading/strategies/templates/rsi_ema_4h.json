@@ -1,0 +1,21 @@
+{
+  "name": "rsi_ema_4h",
+  "timeframe": "4h",
+  "direction": "long",
+  "description": "RSI(14) filter + EMA(9/21) crossover on 4h — classic trend-following strategy",
+  "indicators": [
+    {"name": "RSI", "params": {"length": 14}},
+    {"name": "EMA", "params": {"length": 9}},
+    {"name": "EMA", "params": {"length": 21}}
+  ],
+  "rules": {
+    "entry": [
+      {"left": "ema_9", "operator": "crosses_above", "right": "ema_21"},
+      {"left": "rsi_14", "operator": "less_than", "right": 70}
+    ],
+    "exit": [
+      {"left": "ema_9", "operator": "crosses_below", "right": "ema_21"}
+    ]
+  },
+  "version": 1
+}
