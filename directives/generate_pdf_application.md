@@ -59,6 +59,10 @@ PDF Filling (fill_sanlam_pdf.py)
 Output PDF
 ```
 
+**Status:** `server.py` calls `fill_sanlam_pdf.py` directly today. Run `validate_application_data.py` yourself before filling until the server wires it in.
+
+**Second pipeline:** the Wizard UI uses `backend/main.py` → `backend/pdf_service.py`, with template `backend/assets/TR4407-…ELECTRONIC upd.pdf` and mapping `backend/pdf_fill/mapping.json` (`{"key": {"pypdf_name": …}}` format). Edit the mapping that belongs to the pipeline you are changing.
+
 ## Field Mapping
 
 The `mapping.json` file maps application data to PDF field names:
@@ -134,3 +138,7 @@ This creates test data and generates a PDF to verify the workflow.
 - Validation should happen before PDF generation
 - Better error messages needed for field mapping failures
 - Consider adding field length validation
+
+### 2026-09-29
+- Neither backend runs the validator yet, and `server.py` fills missing bank details with placeholder values. A PDF can look complete while its data is missing.
+- Re-extracting fields overwrites the committed `sanlam_pdf_fields_inventory.json` (~100 KB). Use the manual `/remap-pdf-fields` skill.
