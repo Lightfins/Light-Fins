@@ -11,8 +11,8 @@ Start and run the complete Sanlam funeral policy application (frontend + backend
 ## Setup (First Time Only)
 
 ### 1. Install Python Dependencies
+From the repo root:
 ```bash
-cd C:/Users/yolan/Documents/SanlamApp
 pip install -r requirements.txt
 ```
 
@@ -25,19 +25,14 @@ cd ..
 
 ## Running the Application
 
-### Step 1: Start Backend Server
-Open a terminal and run:
-```bash
-python server.py
-```
+### Step 1: Start the Backend That Matches the UI
+Both backends listen on port 8084. Run one of them:
 
-**Expected output:**
-```
-Sanlam Server running at http://localhost:8084
-Press Ctrl+C to stop
-```
+| UI | Calls | Start |
+|----|-------|-------|
+| Wizard (`components/Wizard`, rendered by `App.tsx`) | `POST /api/generate-pdf` | `python backend/main.py` (needs `pip install -r backend/requirements.txt`) |
+| Chat (`hooks/useChatFlow.js`) and the `index.html` prototype | `POST /api/submit-application` | `python server.py` |
 
-**Port:** 8084  
 **Purpose:** Handles API requests, orchestrates execution scripts
 
 ### Step 2: Start Frontend (New Terminal)
@@ -72,24 +67,21 @@ Open browser to: `http://localhost:5173`
 
 ## Output
 
-Generated PDF saved to:
-```
-C:/Users/yolan/Documents/SanlamApp/Sanlam_application_filled.pdf
-```
-
-Intermediate data saved to:
-```
-C:/Users/yolan/Documents/SanlamApp/.tmp/data_<ID>.json
-```
+- `server.py` → `Sanlam_application_filled.pdf` in the repo root; intermediate data in `.tmp/data_<ID>.json`
+- `backend/main.py` → `backend/output/Sanlam_App_<surname>.pdf`, returned as a download
 
 ## Troubleshooting
 
 ### Backend won't start
 **Error:** `Address already in use`  
-**Fix:** Port 8084 is taken. Kill the process or change port in `server.py` (line 17)
+**Fix:** Port 8084 is taken, usually by the other backend. Stop it, or change `PORT` in `server.py` / the `PORT` env var for `backend/main.py`.
 
 **Error:** `ModuleNotFoundError: No module named 'pypdf'`  
 **Fix:** Run `pip install -r requirements.txt`
+
+### Submit returns 404
+**Cause:** The running backend does not serve the UI's endpoint (see the Step 1 table).
+**Fix:** Start the other backend.
 
 ### Frontend won't start
 **Error:** `Cannot find module`  
@@ -119,6 +111,10 @@ python server.py
 Then open `index.html` directly in browser (uses simple HTML/CSS/JS)
 
 ## Learnings
+
+### 2026-09-29
+- The two backends serve different endpoints on the same port. Pick the backend by the UI's endpoint (Step 1 table).
+- Paths are repo-relative. The original author's Windows paths were removed.
 
 ### 2026-01-18
 - React frontend is primary UI (better UX, maintainability)

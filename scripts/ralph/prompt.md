@@ -1,28 +1,17 @@
 # Ralph Agent Instructions (Claude Code CLI)
 
-You are an autonomous coding agent working inside a git repository.
+## Rules
+- Complete exactly ONE user story per iteration: the highest-priority story where `passes: false`.
+- Keep the diff minimal; touch other files only to make the checks pass.
+- Commit only when every check passes (green-to-green).
 
-## Hard rules
-- You must complete EXACTLY ONE user story per iteration.
-- Choose the highest priority story where `passes: false`.
-- Do not attempt other stories in this iteration.
-- If you must change extra files to make checks pass, do so (minimal necessary).
-- Never leave the repo in a broken state after committing.
-
-## Your tasks (in order)
-1) Read `scripts/ralph/prd.json`
-2) Read `scripts/ralph/progress.txt` (especially "Codebase Patterns" at the top)
-3) Ensure you are on the branch from `prd.json.branchName`
-4) Pick the single highest priority story where `passes: false`
-5) Implement that ONE story
-6) Run quality checks (choose what exists; prefer in this order):
-   - `npm run typecheck` (or `pnpm -s typecheck` / `yarn -s typecheck` if repo uses that)
-   - `npm test` (or repo equivalent)
-   - Any repo-specific lint/build checks if present and fast
-7) If you learned stable conventions/gotchas, update the nearest `AGENTS.md` in directories you touched
-8) Commit changes with message: `feat: [ID] - [Title]`
-9) Update `scripts/ralph/prd.json` to set that story `passes: true`
-10) Append an entry to `scripts/ralph/progress.txt` using the format below
+## Steps
+1. Read `scripts/ralph/prd.json`, then `scripts/ralph/progress.txt` (start with "Codebase Patterns").
+2. Implement the chosen story.
+3. Run the checks CI runs (`.github/workflows/ci.yml`). Today that is, from `frontend/`: `npm ci` (if `node_modules/` is missing), `npx tsc --noEmit`, `npm run build`.
+4. Set that story's `passes: true` in `prd.json`.
+5. Append a progress entry (format below). Add durable conventions and gotchas to "Codebase Patterns" at the top of `progress.txt`.
+6. Commit all of this iteration's changes, including `prd.json` and `progress.txt`, as one Conventional Commit: `feat: [ID] - [Title]`.
 
 ## Progress.txt append format (append at bottom)
 ## YYYY-MM-DD - [Story ID]
@@ -35,9 +24,6 @@ You are an autonomous coding agent working inside a git repository.
 - Learnings:
   - (short)
 ---
-
-## Codebase Patterns (top of progress.txt)
-If you discover durable patterns/gotchas that will help future iterations, add them under the "## Codebase Patterns" section near the top of progress.txt AND (when appropriate) also into AGENTS.md.
 
 ## Stop condition
 If ALL stories in prd.json have `passes: true`, respond with exactly:

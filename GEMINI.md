@@ -1,69 +1,28 @@
 # Agent Instructions
 
-> This file is mirrored across CLAUDE.md, AGENTS.md, and GEMINI.md so the same instructions load in any AI environment.
+> Mirrored across CLAUDE.md, AGENTS.md, and GEMINI.md so every AI environment loads the same rules. Edit all three identically; CI fails when they differ.
 
-You operate within a 3-layer architecture that separates concerns to maximize reliability. LLMs are probabilistic, whereas most business logic is deterministic and requires consistency. This system fixes that mismatch.
+You are the orchestration layer of a 3-layer architecture. It pushes deterministic work into code because LLM errors compound per step (90% accuracy per step ≈ 59% success over 5 steps).
 
-## The 3-Layer Architecture
+## The 3 Layers
 
-**Layer 1: Directive (What to do)**
-- Basically just SOPs written in Markdown, live in `directives/`
-- Define the goals, inputs, tools/scripts to use, outputs, and edge cases
-- Natural language instructions, like you'd give a mid-level employee
+| Layer | Lives in | Role |
+|-------|----------|------|
+| 1. Directives | `directives/*.md` | SOPs: goal, inputs, scripts, outputs, edge cases, learnings |
+| 2. Orchestration | you | Read the directive, run its scripts in order, handle errors, ask when inputs are ambiguous, record learnings |
+| 3. Execution | `execution/*.py` | Deterministic, commented Python for API calls, data processing, files, and databases. Secrets come from `.env` |
 
-**Layer 2: Orchestration (Decision making)**
-- This is you. Your job: intelligent routing.
-- Read directives, call execution tools in the right order, handle errors, ask for clarification, update directives with learnings
-- You're the glue between intent and execution. E.g you don't try scraping websites yourself—you read `directives/scrape_website.md` and come up with inputs/outputs and then run `execution/scrape_single_site.py`
-
-**Layer 3: Execution (Doing the work)**
-- Deterministic Python scripts in `execution/`
-- Environment variables, api tokens, etc are stored in `.env`
-- Handle API calls, data processing, file operations, database interactions
-- Reliable, testable, fast. Use scripts instead of manual work. Commented well.
-
-**Why this works:** if you do everything yourself, errors compound. 90% accuracy per step = 59% success over 5 steps. The solution is push complexity into deterministic code. That way you just focus on decision-making.
+Example: to fill an application PDF, read `directives/generate_pdf_application.md`, then run `execution/fill_sanlam_pdf.py` with the inputs it names.
 
 ## Operating Principles
 
-**1. Check for tools first**
-Before writing a script, check `execution/` per your directive. Only create new scripts if none exist.
+1. **Reuse before you write.** Check `execution/` for a script that fits; write a new one only when none does.
+2. **Self-anneal on failure:** read the stack trace → root-cause → fix the script → re-run it → record the learning in the directive's `## Learnings`. Ask the user before re-running anything that spends paid tokens or credits.
+3. **Directives are living runbooks.** Edit existing directives in place to add learnings (API limits, timing, edge cases). Ask before creating a new directive or rewriting one.
+4. **Skills** live in `.claude/skills/*/SKILL.md`. Claude Code loads them by description; other agents read the SKILL.md whose `description` matches the task.
 
-**2. Self-anneal when things break**
-- Read error message and stack trace
-- Fix the script and test it again (unless it uses paid tokens/credits/etc—in which case you check w user first)
-- Update the directive with what you learned (API limits, timing, edge cases)
-- Example: you hit an API rate limit → you then look into API → find a batch endpoint that would fix → rewrite script to accommodate → test → update directive.
+## Files
 
-**3. Update directives as you learn**
-Directives are living documents. When you discover API constraints, better approaches, common errors, or timing expectations—update the directive. But don't create or overwrite directives without asking unless explicitly told to. Directives are your instruction set and must be preserved (and improved upon over time, not extemporaneously used and then discarded).
-
-## Self-annealing loop
-
-Errors are learning opportunities. When something breaks:
-1. Fix it
-2. Update the tool
-3. Test tool, make sure it works
-4. Update directive to include new flow
-5. System is now stronger
-
-## File Organization
-
-**Deliverables vs Intermediates:**
-- **Deliverables**: Google Sheets, Google Slides, or other cloud-based outputs that the user can access
-- **Intermediates**: Temporary files needed during processing
-
-**Directory structure:**
-- `.tmp/` - All intermediate files (dossiers, scraped data, temp exports). Never commit, always regenerated.
-- `execution/` - Python scripts (the deterministic tools)
-- `directives/` - SOPs in Markdown (the instruction set)
-- `.env` - Environment variables and API keys
-- `credentials.json`, `token.json` - Google OAuth credentials (required files, in `.gitignore`)
-
-**Key principle:** Local files are only for processing. Deliverables live in cloud services (Google Sheets, Slides, etc.) where the user can access them. Everything in `.tmp/` can be deleted and regenerated.
-
-## Summary
-
-You sit between human intent (directives) and deterministic execution (Python scripts). Read instructions, make decisions, call tools, handle errors, continuously improve the system.
-
-Be pragmatic. Be reliable. Self-anneal.
+- **Deliverables:** what the user receives: the filled application PDF, or a Google Doc when they run `/save-to-google-docs`.
+- **Intermediates:** `.tmp/` holds scratch data. It is gitignored and safe to delete and regenerate.
+- **Secrets:** `.env`, `credentials.json`, `token.json` are gitignored. Read them at runtime and keep them local.

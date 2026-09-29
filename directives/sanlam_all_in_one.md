@@ -25,7 +25,8 @@
 Collect: Consent, Name, Age, ID, Gender, Contact, Address, Income.
 
 ### STEP 7: COMPULSORY FUNERAL COVER
-**Inform:** "The All-in-One Plan requires a minimum of R10,000 funeral cover for you (the Principal). How much would you like? (Up to R100,000)"
+**Inform:** "The All-in-One Plan requires a minimum of R10,000 funeral cover for you (the Principal). How much would you like?"
+- Offer exactly the amounts from `get_available_covers('principal')` that are R10,000 or more.
 
 ### STEP 8: OPTIONAL COVERS (PLA)
 **Ask:** "Would you like to add **Life Cover** (lump sum or monthly payouts) or **Monthly Expense Cover** (grocery/bills) for yourself?"
@@ -49,9 +50,9 @@ Collect: Consent, Name, Age, ID, Gender, Contact, Address, Income.
 - Collect previous insurer and start dates to waive the 6-month waiting period.
 
 ### STEP 12-14: SUMMARY & SUBMISSION
-- Calculate premium (Enforce min R250).
-- Present final summary.
-- Submit to Google Docs as "All-In-One Application".
+- Quote with `calculate_total_premium(lives, plan='all_in_one')` (the engine applies the R250 minimum).
+- Present the final summary.
+- Save with `create_application(..., save_to_google=False)`. Uploading to Google Docs is the manual `/save-to-google-docs` skill.
 
 ---
 
